@@ -4,8 +4,11 @@ from Constant import *
 
 
 def DH_Matrix(alpha, a, theta, d):
-    theta_r = math.radians(theta)
-    alpha_r = math.radians(alpha)
+
+    theta_r = theta
+    alpha_r = alpha
+    # theta_r = math.radians(theta)
+    # alpha_r = math.radians(alpha)
     dh_matrix = np.zeros((4, 4))
 
     dh_matrix[0, 0] = math.cos(theta_r)
@@ -37,11 +40,11 @@ def RobotArmModel_Feedforward(thetas):
         return np.zeros((4, 4))
 
     dh_1 = DH_Matrix(0, 0, thetas[0], l1)
-    dh_2 = DH_Matrix(-90, 0, thetas[1], 0)
+    dh_2 = DH_Matrix(math.radians(-90), 0, thetas[1], 0)
     dh_3 = DH_Matrix(0, l2, thetas[2], 0)
     dh_4 = DH_Matrix(0, l3, thetas[3], 0)
-    dh_5 = DH_Matrix(90, 0, thetas[4], l4)
-    dh_6 = DH_Matrix(-90, l5, thetas[5], 0)
+    dh_5 = DH_Matrix(math.radians(90), 0, thetas[4], l4)
+    dh_6 = DH_Matrix(math.radians(-90), l5, thetas[5], 0)
 
     dh_list = [dh_1, dh_2, dh_3, dh_4, dh_5, dh_6]
 
@@ -67,3 +70,6 @@ def FeedForwardPositionTransfer(base_coord, thetas):
         End_coord.append(End_position[i, 0])
 
     return End_coord
+
+
+
