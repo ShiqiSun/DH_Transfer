@@ -19,6 +19,7 @@ z = dht_0.dot(basep)
 # print(y)
 print(z)
 print(x)
+print(z)
 
 
 
