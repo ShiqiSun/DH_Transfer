@@ -30,7 +30,6 @@ def get_jac(joints: np.ndarray):
     return jac
 
 
-
 def ik(T_tar, joints_init = np.zeros(6), tolerance = 1e-17):
     itertime = 0
     step = 0.5
@@ -53,8 +52,6 @@ def radistransfer(joints):
         joints[i] = np.round(math.degrees(joints[i])%360, 2)
         joints[i] = joints[i]%360
     return joints
-
-
 
 
 def InverFind(base_coord, final_coord):

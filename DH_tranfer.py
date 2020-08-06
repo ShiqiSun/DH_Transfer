@@ -39,8 +39,8 @@ def RobotArmModel_Feedforward(thetas):
         print("The number of angles is wrong!")
         return np.zeros((4, 4))
 
-    dh_1 = DH_Matrix(0, 0, thetas[0], l1)
-    dh_2 = DH_Matrix(math.radians(-90), 0, thetas[1], 0)
+    dh_1 = DH_Matrix(0, 0, thetas[0], 0)
+    dh_2 = DH_Matrix(math.radians(-90), 0, thetas[1], l1)
     dh_3 = DH_Matrix(0, l2, thetas[2], 0)
     dh_4 = DH_Matrix(0, l3, thetas[3], 0)
     dh_5 = DH_Matrix(math.radians(90), 0, thetas[4], l4)
