@@ -2,9 +2,8 @@ import math as ma
 import numpy as np
 import Inverse as iv
 import random
-
-obstacles = [[[1, 1], [1, 2], [2, 2], [2, 1]]]
-heights = [1]
+import rrt_2d as rrt
+from Constant import *
 
 
 def FindInter(point1, point2, angle):
@@ -66,40 +65,47 @@ def RangeSafetyCheck(angle, obstacles):
     return False
 
 
-
-
-
 def MotionPlanning(obstacles, goal, heights):
     thetas = [0, 90, 0, 0, 0, 0]
     goal1 = [goal[0], goal[1]]
     angle = GetAngle(goal1)
+    goalxy = [np.sqrt(np.square(goal[0]) + np.square(goal[1])), goal[2]]
     if RangeSafetyCheck(angle, obstacles):
         # RRTMotionPlanning()
         interobs = LineObstacle(angle, obstacles, heights)
         upbound = 0
         lowbound = 0
+        new_obstacles = []
         for ob in interobs:
             d = []
+            h = ob[0][2]
             for point in ob:
                 d.append(np.sqrt(np.square(point[0])+np.square(point[1])))
             upbound = max(d)
             lowbound = min(d)
-        print(upbound, lowbound)
+            obstacle = [lowbound, upbound, h]
+            new_obstacles.append(obstacle)
+        rrt.RRT_arm(new_obstacles, goalxy, thetas)
         return
     else:
         thetas[0] = angle
-        xy = [np.sqrt(np.square(goal[0])+np.square(goal[1])), goal[2]]
-        thetas[1], thetas[2], thetas[3] = iv.iter(thetas[1], thetas[2], thetas[3], xy[0], xy[1])
+        thetas[1], thetas[2], thetas[3] = iv.iter(thetas[1], thetas[2], thetas[3], goalxy[0], goalxy[1])
         while not iv.ArmCheck(thetas[1], thetas[2], thetas[3]):
             thetas[1] = random.randrange(0, 90, 1)
             thetas[2] = random.randrange(0, 90, 1)
             thetas[3] = random.randrange(0, 90, 1)
-            thetas[1], thetas[2], thetas[3] = iv.iter(thetas[1], thetas[2], thetas[3], xy[0], xy[1])
+            thetas[1], thetas[2], thetas[3] = iv.iter(thetas[1], thetas[2], thetas[3], goalxy[0], goalxy[1])
             # int type notice
         return thetas
 
 
+
+
+
+
+
+
 if __name__ == '__main__':
     # GetUnsafeRange_v1(obstacles)
-    print(MotionPlanning(obstacles, [1.5, 1.5, 1], heights))
+    print(MotionPlanning(obstacles, [10, 10, 7], heights))
     # print(LineObstacle(45, obstacles, heights))

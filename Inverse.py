@@ -1,7 +1,7 @@
 from math import *
 from Constant import *
 import numpy as np
-
+import random
 
 
 def ArmCheck(theta1, theta2, theta3):
@@ -16,7 +16,6 @@ def ArmCheck(theta1, theta2, theta3):
         return False
     else:
         return True
-
 
 
 def getxy(theta1, theta2, theta3):
@@ -92,6 +91,14 @@ def iter(theta1, theta2, theta3, goalx, goaly):
         iter = iter + 1
 
 
+def Inverse(thetas, goalxy):
+    thetas[1], thetas[2], thetas[3] = iter(thetas[1], thetas[2], thetas[3], goalxy[0], goalxy[1])
+    while not ArmCheck(thetas[1], thetas[2], thetas[3]):
+        thetas[1] = random.randrange(0, 90, 1)
+        thetas[2] = random.randrange(0, 90, 1)
+        thetas[3] = random.randrange(0, 90, 1)
+        thetas[1], thetas[2], thetas[3] = iter(thetas[1], thetas[2], thetas[3], goalxy[0], goalxy[1])
+    return thetas
 
 
 if __name__ == '__main__':
