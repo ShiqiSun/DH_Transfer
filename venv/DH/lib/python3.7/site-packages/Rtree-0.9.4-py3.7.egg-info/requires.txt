@@ -1,0 +1,11 @@
+setuptools
+
+[all]
+pytest-cov
+numpy
+pytest>=3
+
+[test]
+pytest>=3
+pytest-cov
+numpy
