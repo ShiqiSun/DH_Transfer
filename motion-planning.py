@@ -4,6 +4,7 @@ import Inverse as iv
 import random
 
 obstacles = [[[1, 1], [1, 2], [2, 2], [2, 1]]]
+heights = [1]
 
 
 def FindInter(point1, point2, angle):
@@ -17,19 +18,22 @@ def FindInter(point1, point2, angle):
     return [x, y]
 
 
-
-def LineObstacle(angle, obstacles):
-    points = []
-    for obstacle in obstacles:
+def LineObstacle(angle, obstacles, heights):
+    interobs = []
+    flag = 0
+    for index1, obstacle in enumerate(obstacles):
+        points = []
         for index in range(len(obstacle)):
             angle1 = GetAngle(obstacle[index-1])
             angle2 = GetAngle(obstacle[index])
             if min(angle1, angle2) < angle <= max(angle1, angle2):
-                points.append(FindInter(obstacle[index-1], obstacle[index], angle))
+                a = FindInter(obstacle[index-1], obstacle[index], angle)
+                a.append(heights[index1])
+                points.append(a)
+        if len(points) > 0:
+            interobs.append(points)
             # print(angle1, angle2)
-        return points
-
-
+    return interobs
 
 
 def GetUnsafeRange_v1(obstacles):
@@ -63,16 +67,28 @@ def RangeSafetyCheck(angle, obstacles):
 
 
 
-def MotionPlanning(obstacles, goal):
+
+
+def MotionPlanning(obstacles, goal, heights):
     thetas = [0, 90, 0, 0, 0, 0]
     goal1 = [goal[0], goal[1]]
     angle = GetAngle(goal1)
     if RangeSafetyCheck(angle, obstacles):
         # RRTMotionPlanning()
+        interobs = LineObstacle(angle, obstacles, heights)
+        upbound = 0
+        lowbound = 0
+        for ob in interobs:
+            d = []
+            for point in ob:
+                d.append(np.sqrt(np.square(point[0])+np.square(point[1])))
+            upbound = max(d)
+            lowbound = min(d)
+        print(upbound, lowbound)
         return
     else:
         thetas[0] = angle
-        xy = [np.square(goal[0])+np.square(goal[1]), goal[2]]
+        xy = [np.sqrt(np.square(goal[0])+np.square(goal[1])), goal[2]]
         thetas[1], thetas[2], thetas[3] = iv.iter(thetas[1], thetas[2], thetas[3], xy[0], xy[1])
         while not iv.ArmCheck(thetas[1], thetas[2], thetas[3]):
             thetas[1] = random.randrange(0, 90, 1)
@@ -85,5 +101,5 @@ def MotionPlanning(obstacles, goal):
 
 if __name__ == '__main__':
     # GetUnsafeRange_v1(obstacles)
-    # print(MotionPlanning(obstacles, [0.5, 1.5, 1]))
-    # print(LineObstacle(45, obstacles))
+    print(MotionPlanning(obstacles, [1.5, 1.5, 1], heights))
+    # print(LineObstacle(45, obstacles, heights))
