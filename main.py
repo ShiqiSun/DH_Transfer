@@ -9,7 +9,7 @@ import math as math
 
 
 
-# thetas = [0, 0, 0, 0, 0, 0]
+thetas = [0, 90, 0, 0, 0, 0]
 # base = [0, 0, 0]
 # target = [3, 1, 1]
 # basep = np.array([[0], [0], [0], [1]])
@@ -17,14 +17,14 @@ import math as math
 #
 #
 #
-# dht = dh.RobotArmModel_Feedforward(thetas)
+dht = dh.RobotArmModel_Feedforward(thetas)
 #
 # end = dht.dot(basep)
 # print(dht)
 # print(end)
 #
 #
-# # x, y = jb.ik(dht)
+x, y = jb.ik(dht)
 # # z = dht.dot(basep)
 # # print(y)
 # # print(z)

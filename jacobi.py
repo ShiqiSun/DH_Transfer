@@ -27,6 +27,7 @@ def get_jac(joints: np.ndarray):
         Tm = dh.RobotArmModel_Feedforward(joints_m)
         Tp = dh.RobotArmModel_Feedforward(joints_p)
         jac[:, i] = (Tp - Tm).flatten() / (2 * delta)
+    # print(jac)
     return jac
 
 
@@ -34,7 +35,7 @@ def ik(T_tar, joints_init = np.zeros(6), tolerance = 1e-17):
     itertime = 0
     step = 0.5
     joints = joints_init.copy()
-    while itertime < 100000:
+    while itertime < 10000:
         T_cur = dh.RobotArmModel_Feedforward(joints)
         deltaT = (T_tar - T_cur).flatten()
         error = np.linalg.norm(deltaT)
@@ -42,6 +43,8 @@ def ik(T_tar, joints_init = np.zeros(6), tolerance = 1e-17):
             return joints, radistransfer(joints)
         jac = get_jac(joints)
         deltaq = np.linalg.pinv(jac) @ deltaT
+        # print(deltaT)
+        # print(deltaq)
         joints = joints + step * deltaq
         itertime += 1
     return False
