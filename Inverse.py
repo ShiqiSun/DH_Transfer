@@ -61,6 +61,7 @@ def jacbixy(theta1, theta2, theta3, deltax, deltay):
     # print(ja)
     return ja
 
+
 def iter(theta1, theta2, theta3, goalx, goaly):
     error = 1e-8
     iter = 0
@@ -76,7 +77,7 @@ def iter(theta1, theta2, theta3, goalx, goaly):
         error1 = np.linalg.norm(deltaT)
         if error1 < error:
             print(x, y)
-            print(theta1, theta2, theta3, "yes")
+            # print("yes, We find angles")
             return theta1, theta2, theta3
         ja = jacbixy(theta1, theta2, theta3, deltax, deltay)
         deltaq = np.linalg.pinv(ja) @ deltaT
@@ -89,6 +90,7 @@ def iter(theta1, theta2, theta3, goalx, goaly):
         # theta3 = (theta3 + step*ja[2, 0]) % 360
         # print(theta1, theta2, theta3)
         iter = iter + 1
+    return None
 
 
 def Inverse(thetas, goalxy):

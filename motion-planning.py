@@ -66,11 +66,12 @@ def RangeSafetyCheck(angle, obstacles):
 
 
 def MotionPlanning(obstacles, goal, heights):
-    thetas = [0, 90, 0, 0, 0, 0]
+    thetas = [0, 90, 0, 0, 90, 0]
     goal1 = [goal[0], goal[1]]
     angle = GetAngle(goal1)
     goalxy = [np.sqrt(np.square(goal[0]) + np.square(goal[1])), goal[2]]
     if RangeSafetyCheck(angle, obstacles):
+        thetas[0] = angle
         # RRTMotionPlanning()
         interobs = LineObstacle(angle, obstacles, heights)
         upbound = 0

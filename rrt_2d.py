@@ -5,9 +5,14 @@ from RRT.src.rrt.rrt import RRT
 from RRT.src.search_space.search_space import SearchSpace
 from RRT.src.utilities.plotting import Plot
 from Constant import *
-
+import Inverse as iv
 
 def RRT_arm(obstacles, goalxy, thetas):
+
+    if goalxy[0] > EnviromBoundx or goalxy[1]>EnviromBoundy:
+        print("We cannot reach that bound.")
+        return False
+
     X_dimensions = np.array([(0, EnviromBoundx), (0, EnviromBoundy)])  # dimensions of Search Space
     # obstacles
     Obstacles = np.array([(ob[0], 0, ob[1], ob[2]) for ob in obstacles])
@@ -15,8 +20,6 @@ def RRT_arm(obstacles, goalxy, thetas):
 
     x_init = (initialx, initialy)  # starting location
     x_goal = (goalxy[0], goalxy[1])  # goal location
-    if x_goal[0] > EnviromBoundx or x_goal[1] > EnviromBoundy:
-        return False
     # print(x_goal)
 
     Q = np.array([(1, 1)])  # length of tree edges
@@ -34,11 +37,12 @@ def RRT_arm(obstacles, goalxy, thetas):
     # print(path)
 
     thetas_c = thetas.copy()
-    print(thetas_c)
+    i = 0
     for point in path:
-        print(point)
-
-
+        i = i + 1
+        thetas_c[1], thetas_c[2], thetas_c[3] = iv.iter(thetas_c[1], thetas_c[2], thetas_c[3],
+                                  point[0], point[1])
+        print("The", i, "th Angles is:", thetas_c)
 
     # plot
     # plot = Plot("rrt_2d")
