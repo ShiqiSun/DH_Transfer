@@ -12,4 +12,4 @@ initialx = l5
 
 # obstacles = [[[10, 10], [10, 20], [20, 20], [20, 10]]]
 obstacles = [[[3, 3], [3, 6], [6, 6], [6, 3]]]
-heights = [3]
+heights = [15]

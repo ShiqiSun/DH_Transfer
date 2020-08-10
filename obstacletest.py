@@ -90,4 +90,4 @@ if __name__ == '__main__':
     thetas = [0, 90, 0, 0, 90, 0]
     # ob = [0, 0, 1, 1]
     # print(LineObcheck([-1, 0], [-2, -3], ob))
-    ArmStatusCheck(thetas)
+    # ArmStatusCheck(thetas)

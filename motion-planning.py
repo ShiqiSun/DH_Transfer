@@ -4,6 +4,7 @@ import Inverse as iv
 import random
 import rrt_2d as rrt
 from Constant import *
+import envplot as plt
 
 
 def FindInter(point1, point2, angle):
@@ -68,14 +69,15 @@ def RangeSafetyCheck(angle, obstacles):
 def MotionPlanning(obstacles, goal, heights):
     thetas = [0, 90, 0, 0, 90, 0]
     goal1 = [goal[0], goal[1]]
+    plt.obplot(obstacles, goal1)
     angle = GetAngle(goal1)
     goalxy = [np.sqrt(np.square(goal[0]) + np.square(goal[1])), goal[2]]
     if RangeSafetyCheck(angle, obstacles):
         thetas[0] = angle
         # RRTMotionPlanning()
         interobs = LineObstacle(angle, obstacles, heights)
-        upbound = 0
-        lowbound = 0
+        # upbound = 0
+        # lowbound = 0
         new_obstacles = []
         for ob in interobs:
             d = []
@@ -86,8 +88,9 @@ def MotionPlanning(obstacles, goal, heights):
             lowbound = min(d)
             obstacle = [lowbound, upbound, h]
             new_obstacles.append(obstacle)
-        rrt.RRT_arm(new_obstacles, goalxy, thetas)
-        return
+        while not rrt.RRT_arm(new_obstacles, goalxy, thetas):
+            continue
+        return True
     else:
         thetas[0] = angle
         thetas[1], thetas[2], thetas[3] = iv.iter(thetas[1], thetas[2], thetas[3], goalxy[0], goalxy[1])
@@ -97,11 +100,12 @@ def MotionPlanning(obstacles, goal, heights):
             thetas[3] = random.randrange(0, 90, 1)
             thetas[1], thetas[2], thetas[3] = iv.iter(thetas[1], thetas[2], thetas[3], goalxy[0], goalxy[1])
             # int type notice
-            print("There is no obstacles in our direction. Directly go and grap it.")
-        return thetas
+        print("There is no obstacles in our direction. Directly go and grap it.")
+        print("The Angles is:", thetas)
+        return True
 
 
 if __name__ == '__main__':
     # GetUnsafeRange_v1(obstacles)
-    print(MotionPlanning(obstacles, [8, 8, 5], heights))
+    MotionPlanning(obstacles, [10, 10, 5], heights)
     # print(LineObstacle(45, obstacles, heights))

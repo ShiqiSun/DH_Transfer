@@ -22,12 +22,11 @@ def RRT_arm(obstacles, goalxy, thetas):
 
     x_init = (initialx, initialy)  # starting location
     x_goal = (goalxy[0], goalxy[1])  # goal location
-    # print(x_goal)
 
     Q = np.array([(1, 1)])  # length of tree edges
-    r = l1/20  # length of smallest edge to check for intersection with obstacles
+    r = l1/10  # length of smallest edge to check for intersection with obstacles
     max_samples = 1024  # max number of samples to take before timing out
-    prc = 0.1  # probability of checking for a connection to goal
+    prc = 1  # probability of checking for a connection to goal
 
     # create search space
     X = SearchSpace(X_dimensions, Obstacles)
@@ -36,25 +35,28 @@ def RRT_arm(obstacles, goalxy, thetas):
     rrt = RRT(X, Q, x_init, x_goal, max_samples, r, prc)
     path = rrt.rrt_search()
 
-    # print(path)
 
     thetas_c = thetas.copy()
     i = 0
     for point in path:
         i = i + 1
+        print(point)
         thetas_c[1], thetas_c[2], thetas_c[3] = iv.iter(thetas_c[1], thetas_c[2], thetas_c[3],
                                   point[0], point[1])
         for ob in Obstacles:
             if obt.ArmStatusCheck(thetas, ob):
-                break
-        print("The", i, "th Angles is:", thetas_c)
+                return False
+        print("The", i, "th Angles is:", thetas_c,
+              "when grabber go to", point)
+
 
     # plot
-    # plot = Plot("rrt_2d")
-    # plot.plot_tree(X, rrt.trees)
-    # if path is not None:
-    #     plot.plot_path(X, path)
-    # plot.plot_obstacles(X, Obstacles)
-    # plot.plot_start(X, x_init)
-    # plot.plot_goal(X, x_goal)
-    # plot.draw(auto_open=True)
+    plot = Plot("rrt_2d")
+    plot.plot_tree(X, rrt.trees)
+    if path is not None:
+        plot.plot_path(X, path)
+    plot.plot_obstacles(X, Obstacles)
+    plot.plot_start(X, x_init)
+    plot.plot_goal(X, x_goal)
+    plot.draw(auto_open=True)
+    return True

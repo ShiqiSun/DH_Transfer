@@ -76,7 +76,7 @@ def iter(theta1, theta2, theta3, goalx, goaly):
         deltaT = [deltax, deltay]
         error1 = np.linalg.norm(deltaT)
         if error1 < error:
-            print(x, y)
+            # print(x, y)
             # print("yes, We find angles")
             return theta1, theta2, theta3
         ja = jacbixy(theta1, theta2, theta3, deltax, deltay)
@@ -104,6 +104,7 @@ def Inverse(thetas, goalxy):
 
 
 if __name__ == '__main__':
+
     print(getxy(45, 45, 0))
-    theta1, theta2, theta3 = iter(90, 0, 0, 1.707106781186548, 3.7071067811865475)
-    print(ArmCheck(theta1, theta2, theta3))
+    # theta1, theta2, theta3 = iter(90, 0, 0, 1.707106781186548, 3.7071067811865475)
+    # print(ArmCheck(theta1, theta2, theta3))
