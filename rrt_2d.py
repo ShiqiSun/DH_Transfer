@@ -6,6 +6,8 @@ from RRT.src.search_space.search_space import SearchSpace
 from RRT.src.utilities.plotting import Plot
 from Constant import *
 import Inverse as iv
+import obstacletest as obt
+
 
 def RRT_arm(obstacles, goalxy, thetas):
 
@@ -23,7 +25,7 @@ def RRT_arm(obstacles, goalxy, thetas):
     # print(x_goal)
 
     Q = np.array([(1, 1)])  # length of tree edges
-    r = l1/10  # length of smallest edge to check for intersection with obstacles
+    r = l1/20  # length of smallest edge to check for intersection with obstacles
     max_samples = 1024  # max number of samples to take before timing out
     prc = 0.1  # probability of checking for a connection to goal
 
@@ -42,6 +44,9 @@ def RRT_arm(obstacles, goalxy, thetas):
         i = i + 1
         thetas_c[1], thetas_c[2], thetas_c[3] = iv.iter(thetas_c[1], thetas_c[2], thetas_c[3],
                                   point[0], point[1])
+        for ob in Obstacles:
+            if obt.ArmStatusCheck(thetas, ob):
+                break
         print("The", i, "th Angles is:", thetas_c)
 
     # plot

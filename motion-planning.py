@@ -97,16 +97,11 @@ def MotionPlanning(obstacles, goal, heights):
             thetas[3] = random.randrange(0, 90, 1)
             thetas[1], thetas[2], thetas[3] = iv.iter(thetas[1], thetas[2], thetas[3], goalxy[0], goalxy[1])
             # int type notice
+            print("There is no obstacles in our direction. Directly go and grap it.")
         return thetas
-
-
-
-
-
-
 
 
 if __name__ == '__main__':
     # GetUnsafeRange_v1(obstacles)
-    print(MotionPlanning(obstacles, [10, 10, 7], heights))
+    print(MotionPlanning(obstacles, [8, 8, 5], heights))
     # print(LineObstacle(45, obstacles, heights))
