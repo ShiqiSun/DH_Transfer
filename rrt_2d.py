@@ -17,16 +17,17 @@ def RRT_arm(obstacles, goalxy, thetas):
 
     X_dimensions = np.array([(0, EnviromBoundx), (0, EnviromBoundy)])  # dimensions of Search Space
     # obstacles
-    Obstacles = np.array([(ob[0], 0, ob[1], ob[2]) for ob in obstacles])
-    # Obstacles = np.array([(20, 20, 40, 40), (20, 60, 40, 80), (60, 20, 80, 40), (60, 60, 80, 80)])
 
+    Obstacles = np.array([(ob[0], 0, ob[1], ob[2]) for ob in obstacles])
+    print(Obstacles)
+    # Obstacles = np.array([(20, 20, 40, 40), (20, 60, 40, 80), (60, 20, 80, 40), (60, 60, 80, 80)])
     x_init = (initialx, initialy)  # starting location
     x_goal = (goalxy[0], goalxy[1])  # goal location
 
     Q = np.array([(1, 1)])  # length of tree edges
-    r = l1/10  # length of smallest edge to check for intersection with obstacles
+    r = l1/10 # length of smallest edge to check for intersection with obstacles
     max_samples = 1024  # max number of samples to take before timing out
-    prc = 1  # probability of checking for a connection to goal
+    prc = 0.2  # probability of checking for a connection to goal
 
     # create search space
     X = SearchSpace(X_dimensions, Obstacles)

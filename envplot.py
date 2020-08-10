@@ -13,7 +13,7 @@ def obplot(obstacles, goal1):
 
 
     path1 = [[0, 0], goal1]
-    plot = Plot("rrt_2d")
+    plot = Plot("obst_env")
     plot.plot_path(X, path1)
     plot.plot_obstacles(X, Obstacles)
     # plot.plot_start(X, x_init)
